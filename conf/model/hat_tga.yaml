@@ -1,0 +1,21 @@
+# @package model
+# HAT+TGA — Terrain-Guided Attention with SwinIR-family backbone
+
+name: hat_tga
+
+generator:
+  in_channels: 5           # ERA5 channels only (no DEM at input stem)
+  dem_enc_in_channels: 5   # DEM encoder input channels
+  dem_enc_channels: 64     # DEM encoder output dimension
+  embed_dim: 180
+  depths: [6, 6, 6, 6]
+  num_heads: [6, 6, 6, 6]
+  window_size: 8
+  scale_factor: 4
+
+discriminator:
+  in_channels: 1
+  num_features: 64
+
+perceptual:
+  depth: 5

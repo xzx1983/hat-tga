@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# uv
+.python-version
+
+# Data — never commit raw or processed data
+data/raw/
+data/processed/
+
+# Model outputs and checkpoints (keep test_metrics.json for reproducibility record)
+outputs/
+!outputs/results/
+!outputs/results/test_metrics.json
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+
+# Hydra outputs
+outputs/
+multirun/
+.hydra/
+
+# Logs
+logs/
+*.log
+tensorboard/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+*.key
+*.pem

@@ -1,0 +1,69 @@
+[project]
+name = "hat-tga"
+version = "0.1.0"
+description = "Terrain-Guided Attention for Wind Speed Downscaling (npj Climate and Atmospheric Science)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+keywords = ["wind downscaling", "super-resolution", "terrain-guided attention", "deep learning"]
+dependencies = [
+    # Core deep learning — install torch separately (see README for CUDA version)
+    "pytorch-lightning>=2.0",
+    # Config management
+    "hydra-core>=1.3.2",
+    "omegaconf>=2.3.0",
+    # Data I/O
+    "numpy>=1.26.0",
+    "pandas>=2.0.0",
+    "xarray>=2023.1.0",
+    "netCDF4>=1.6.5",
+    # Visualisation
+    "matplotlib>=3.7.0",
+    # Utilities
+    "tqdm>=4.65.0",
+    "tensorboard>=2.14.0",
+]
+
+[project.optional-dependencies]
+# Required only for downloading and pre-processing raw data
+data = [
+    "cdsapi>=0.7.0",
+    "rasterio>=1.3.9",
+    "rioxarray>=0.15.0",
+    "scipy>=1.11.0",
+]
+dev = [
+    "pytest>=7.4.0",
+    "ruff>=0.3.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hat_tga"]
+
+# ── uv: PyTorch CUDA index ──────────────────────────────────────────────────
+# Uncomment and adjust the CUDA version for your GPU.
+# CPU-only: remove the [[tool.uv.index]] block and keep the default PyPI torch.
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu121", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts   = "-v --tb=short"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

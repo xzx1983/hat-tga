@@ -1,0 +1,44 @@
+# @package dataset
+# Wind super-resolution dataset — Sichuan Basin, China
+
+name: wind_sr
+split: train
+
+era5_dir:  data/processed/era5
+cldas_dir: data/processed/cldas
+dem_path:  data/processed/dem/dem_features_0.0625deg.nc
+
+# Temporal split
+# 2018 excluded: CLDAS 2018 files are MICAPS binary format (not NetCDF)
+train_years: [2017, 2019, 2020, 2021]
+val_years:   [2022]
+test_years:  [2023, 2024]
+
+lr_channels:  5    # ERA5: u10, v10, sp, t2m, blh
+dem_channels: 5    # SRTM: elevation, slope, sin_aspect, cos_aspect, tri
+scale_factor: 4    # ERA5 0.25° → CLDAS 0.0625°
+
+hr_patch_size: 64
+lr_patch_size: 16
+
+lat_min: 26.0
+lat_max: 34.0
+lon_min: 97.0
+lon_max: 109.0
+
+# Normalisation statistics (computed from train years 2017, 2019, 2020, 2021)
+# ERA5 LR: [u10,      v10,     sp,          t2m,     blh   ]
+lr_mean: [-0.0362,  0.1926,  77502.28,   282.36,  399.04]
+lr_std:  [ 1.2003,  1.3726,  13582.92,    11.235,  502.58]
+
+# DEM: [elevation, slope, sin_aspect, cos_aspect, tri]
+dem_mean: [2380.05, 17.47,  0.002, -0.009, 26.39]
+dem_std:  [1533.35, 10.14,  0.655,  0.644, 15.78]
+
+# CLDAS HR wind speed
+hr_speed_mean: 1.2314
+hr_speed_std:  0.9811
+
+augmentation:
+  random_flip_h: true
+  random_flip_v: false
