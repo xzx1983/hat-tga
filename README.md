@@ -2,7 +2,7 @@
 
 Official code for **"Terrain-Guided Attention Improves Deep Learning Wind Speed Downscaling over Complex Terrain"** (*npj Climate and Atmospheric Science*, under review).
 
-HAT+TGA injects DEM-derived terrain features directly into every window-attention layer of a Swin-family backbone via an outer-sum additive bias. This lets the model learn which grid-cell pairs interact strongly given the intervening terrain, without concatenating DEM at the input stem.
+HAT+TGA injects DEM-derived terrain features directly into every window-attention layer of a Swin-family backbone via an outer-sum additive bias. The bias B[h,i,j] = t_h[i] + t_h[j] acts as a terrain-conditioned key bias: after softmax normalisation the query-side term cancels, so tokens at terrain positions similar to the key's position receive amplified attention. This is learned end-to-end without concatenating DEM at the input stem.
 
 **Key results (Sichuan, China, test 2023–2024):**
 - Grid-scale RMSE: 0.726 m/s (−38.3% vs bicubic, −0.3% vs HAT+DEM)

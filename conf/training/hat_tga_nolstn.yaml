@@ -1,0 +1,42 @@
+# @package _global_
+# HAT+TGA ablation: same architecture, no station-observation loss (lambda_station=0)
+# Reproduces the ablation row in Table 3 of the manuscript.
+# Grid RMSE: 0.731 m/s  Station RMSE: 1.321 m/s  (vs full HAT+TGA: 0.726 / 0.880)
+
+defaults:
+  - /dataset: wind_sr
+  - /model: hat_tga
+  - _self_
+
+seed: 42
+output_dir: outputs_hat_tga_nolstn/
+
+dataset:
+  use_station_loss: false
+  station_dir: data/raw/stations
+
+trainer:
+  max_epochs: 200
+  gradient_clip_val: 1.0
+  precision: "bf16-mixed"
+
+  lr_g: 1.0e-4
+  lr_d: 1.0e-4
+  lr_scheduler: cosine
+  warmup_epochs: 5
+
+  lambda_pixel:      1.0
+  lambda_perceptual: 0.1
+  lambda_adv:        0.005
+  lambda_physical:   0.05
+  lambda_station:    0.0
+  lambda_wavelet:    0.2
+  wavelet_hf_weight: 2.0
+  elev_weight:       2.0
+  elev_threshold:    2000.0
+
+  batch_size: 8
+  num_workers: 4
+  pin_memory: true
+
+model_name: hat_tga
