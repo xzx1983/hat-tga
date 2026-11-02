@@ -1,13 +1,13 @@
 # HAT+TGA: Terrain-Guided Attention for Wind Speed Downscaling
 
-Official code for **"Terrain-Guided Attention Improves Deep Learning Wind Speed Downscaling over Complex Terrain"** (*npj Climate and Atmospheric Science*, under review).
+Code accompanying **"Terrain-Guided Attention for Wind Speed Downscaling Simultaneously Improves Grid-Scale and Station-Scale Accuracy over Complex Terrain"**, submitted to *npj Climate and Atmospheric Science*.
 
-HAT+TGA injects DEM-derived terrain features directly into every window-attention layer of a Swin-family backbone via an outer-sum additive bias. The bias B[h,i,j] = t_h[i] + t_h[j] acts as a terrain-conditioned key bias: after softmax normalisation the query-side term cancels, so tokens at terrain positions similar to the key's position receive amplified attention. This is learned end-to-end without concatenating DEM at the input stem.
+HAT+TGA injects DEM-derived terrain features directly into every window-attention layer of a Swin-family backbone via an outer-sum additive bias. The bias B[h,i,j] = t_h[i] + t_h[j] reduces after softmax because the query-side term t_h[i] is constant across keys and cancels. The effective bias is key-only, B_eff[h,i,j] = t_h[j], so high-score key positions receive more attention from every query. This is learned end-to-end without concatenating DEM at the input stem.
 
 **Key results (Sichuan, China, test 2023–2024):**
-- Grid-scale RMSE: 0.726 m/s (−38.3% vs bicubic, −0.3% vs HAT+DEM)
-- Station-scale RMSE: 0.880 m/s (−23% vs bicubic, −28% vs HAT+DEM)
-- Only model improving both grid-scale and station-scale accuracy simultaneously
+- Grid-scale RMSE: 0.726 m/s (−38.3% vs bicubic; 0.002 m/s lower than HAT+DEM)
+- Station-scale RMSE: 0.880 m/s (−23.0% vs bicubic, −28.2% vs HAT+DEM)
+- Among the evaluated deep-learning field-downscaling models, the only model improving both grid-scale and station-scale accuracy simultaneously
 
 ---
 
@@ -182,9 +182,9 @@ B[h,i,j] = terrain_proj(dem_feat)[b,h,i] + terrain_proj(dem_feat)[b,h,j]
 
 | Split | Years | Samples |
 |-------|-------|---------|
-| Train | 2017, 2019, 2020, 2021 | ~28,000 h |
-| Val   | 2022 | ~8,700 h |
-| Test  | 2023–2024 | ~17,500 h |
+| Train | 2017, 2019, 2020, 2021 | 25,848 matched ERA5–CLDAS pairs |
+| Val   | 2022 | 4,152 matched pairs |
+| Test  | 2023–2024 | 14,505 matched pairs |
 
 2018 is excluded: CLDAS 2018 is in MICAPS binary format.
 
@@ -198,8 +198,7 @@ B[h,i,j] = terrain_proj(dem_feat)[b,h,i] + terrain_proj(dem_feat)[b,h,j]
              Improves Grid-Scale and Station-Scale Accuracy over Complex Terrain},
   author  = {Xu, Zi-Xin and Xie, Shengcai and Yang, Ling and Yang, Zhipeng},
   journal = {npj Climate and Atmospheric Science},
-  year    = {2025},
-  note    = {Under review}
+  year    = {2025}
 }
 ```
 

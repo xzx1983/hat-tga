@@ -53,7 +53,9 @@ class TerrainGuidedAttention(nn.Module):
 
     The terrain bias B[h,i,j] = t_h[i] + t_h[j] is an outer-sum of per-token
     per-head terrain scores derived from DEM features via a linear projection.
-    terrain_proj is zero-initialized so TGA = standard attention at epoch 0.
+    The query-side term t_h[i] cancels in the softmax, leaving the effective
+    key-only bias B_eff[h,i,j] = t_h[j]. The terrain projector is zero-initialized
+    so TGA starts as standard attention at epoch 0.
     """
 
     def __init__(
